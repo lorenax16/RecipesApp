@@ -18,7 +18,7 @@ export const usePlanets = () => {
   return [foods, setFoods];
 };
 
-PlanetsProvider.propTypes = {
+FoodsProvider.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
