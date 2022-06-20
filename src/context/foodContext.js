@@ -7,9 +7,9 @@ export default function PlanetsProvider({ children }) {
   const [foods, setFoods] = useState([]);
 
   return (
-    <PlanetsContext.Provider value={ { foods, setFoods,} } >
+    <FoodsContext.Provider value={ { foods, setFoods } } >
       {children}
-    </PlanetsContext.Provider>
+    </FoodsContext.Provider>
   );
 }
 
