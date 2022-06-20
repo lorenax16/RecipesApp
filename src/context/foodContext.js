@@ -13,7 +13,7 @@ export default function PlanetsProvider({ children }) {
   );
 }
 
-export const usePlanets = () => {
+export const useFoods = () => {
   const { foods, setFoods } = useContext(FoodsContext);
   return [foods, setFoods];
 };
