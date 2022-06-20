@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export const FoodsContext = createContext();
 
-export default function PlanetsProvider({ children }) {
+export default function FoodsProvider({ children }) {
   const [foods, setFoods] = useState([]);
 
   return (
