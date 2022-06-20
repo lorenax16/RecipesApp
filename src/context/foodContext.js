@@ -7,7 +7,7 @@ export default function FoodsProvider({ children }) {
   const [foods, setFoods] = useState([]);
 
   return (
-    <FoodsContext.Provider value={ { foods, setFoods } } >
+    <FoodsContext.Provider value={ { foods, setFoods } }>
       {children}
     </FoodsContext.Provider>
   );
