@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-// import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import profileIcon from '../../../../images/profileIcon.svg';
 import exploreIcon from '../../../../images/exploreIcon.svg';
-import SearchBar from '../SearchBar';
+import SearchHeader from '../SearchHeader';
 
 export default function Header() {
   const location = useLocation().pathname.slice(1);
@@ -11,7 +10,7 @@ export default function Header() {
 
   const capitalize = (name) => name
     .charAt(0).toUpperCase() + name.slice(1);
-  // referencia: https://stackoverflow.com/questions/1026069/how-do-i-make-the-first-letter-of-a-string-uppercase-in-javascript
+  // referência: https://stackoverflow.com/questions/1026069/how-do-i-make-the-first-letter-of-a-string-uppercase-in-javascript
 
   const titleFormated = () => {
     if (location.includes('ingredients') || location.includes('nationalities')) {
@@ -46,12 +45,8 @@ export default function Header() {
       {
         disbaled && !location.includes('nationalities')
           ? <img src={ exploreIcon } alt="explore" />
-          : <SearchBar />
+          : <SearchHeader />
       }
     </section>
   );
 }
-
-// Header.propTypes = {
-//   location: PropTypes.string.isRequired,
-// };

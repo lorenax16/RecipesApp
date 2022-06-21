@@ -4,18 +4,34 @@ import PropTypes from 'prop-types';
 export const FoodsContext = createContext();
 
 export default function FoodsProvider({ children }) {
-  const [foods, setFoods] = useState([]);
+  const [filter, setFilter] = useState('');
+  const [search, setSearch] = useState('');
+  const [recipes, setRecipes] = useState([]);
 
   return (
-    <FoodsContext.Provider value={ { foods, setFoods } }>
+    <FoodsContext.Provider
+      value={
+        { filter, setFilter, search, setSearch, recipes, setRecipes }
+      }
+    >
       {children}
     </FoodsContext.Provider>
   );
 }
 
-export const useFoods = () => {
-  const { foods, setFoods } = useContext(FoodsContext);
-  return [foods, setFoods];
+export const useFilter = () => {
+  const { filter, setFilter } = useContext(FoodsContext);
+  return [filter, setFilter];
+};
+
+export const useSearch = () => {
+  const { search, setSearch } = useContext(FoodsContext);
+  return [search, setSearch];
+};
+
+export const useRecipes = () => {
+  const { recipes, setRecipes } = useContext(FoodsContext);
+  return [recipes, setRecipes];
 };
 
 FoodsProvider.propTypes = {
