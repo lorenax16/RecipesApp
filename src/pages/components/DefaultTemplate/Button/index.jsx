@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function Button({ type, id, alt, func, img }) {
+export default function Button({ id, alt, func, img }) {
   return (
     <div>
       <img
-        role={ type }
+        aria-hidden="true"
         data-testid={ id }
         onClick={ func }
         src={ img }
@@ -16,8 +16,8 @@ export default function Button({ type, id, alt, func, img }) {
 }
 
 Button.propTypes = {
-  type: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
+  img: PropTypes.string.isRequired,
   func: PropTypes.func.isRequired,
 };

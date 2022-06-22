@@ -1,9 +1,10 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import Button from '../Button';
 import styles from './styles.modules.css';
-import drinkIcon from '../../../../images/src/drinkIcon.svg'
-import exploreIcon from '../../../../images/src/exploreIcon.svg'
-import mealIcon from '../../../../images/src/mealIcon.svg'
+import drinkIcon from '../../../../images/drinkIcon.svg';
+import exploreIcon from '../../../../images/exploreIcon.svg';
+import mealIcon from '../../../../images/mealIcon.svg';
 
 export default function Footer() {
   const history = useHistory();
@@ -15,21 +16,18 @@ export default function Footer() {
   return (
     <footer data-testid="footer" className={ styles.footer }>
       <Button
-        type="button"
         id="drinks-bottom-btn"
         func={ toGoDrinks }
         alt="Drinks"
         img={ drinkIcon }
       />
       <Button
-        type="button"
         id="explore-bottom-btn"
         func={ toGoExplore }
         alt="Explore"
         img={ exploreIcon }
       />
       <Button
-        type="button"
         id="food-bottom-btn"
         func={ toGoFoods }
         alt="Foods"
