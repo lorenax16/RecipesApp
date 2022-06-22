@@ -1,7 +1,7 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import Button from '../Button';
-import styles from './styles.modules.css';
+import styles from './styles.module.css';
 import drinkIcon from '../../../../images/drinkIcon.svg';
 import exploreIcon from '../../../../images/exploreIcon.svg';
 import mealIcon from '../../../../images/mealIcon.svg';
@@ -9,11 +9,19 @@ import mealIcon from '../../../../images/mealIcon.svg';
 export default function Footer() {
   const history = useHistory();
 
+  const [visibled, setVisibled] = useState(true);
+  const location = useLocation().pathname;
+
   const toGoDrinks = () => history.push('/drinks');
   const toGoExplore = () => history.push('/explore');
   const toGoFoods = () => history.push('/foods');
 
-  return (
+  useEffect(() => {
+    const urlsToNotBeVisibled = ['favorite', 'done'];
+    setVisibled(!urlsToNotBeVisibled.some((url) => location.includes(url)));
+  }, [location]);
+
+  return visibled && (
     <footer data-testid="footer" className={ styles.footer }>
       <Button
         id="drinks-bottom-btn"
