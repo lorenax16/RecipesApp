@@ -5,7 +5,7 @@ import { FoodsContext } from '../../../context/foodContext';
 import RadioBtn from '../RadioBtn';
 
 export default function SearchBar() {
-  const { filter, setFilter, search, setRecipes } = useContext(FoodsContext);
+  const { filter, setFilter, search, setRecipes, recipes } = useContext(FoodsContext);
   const location = useLocation().pathname;
 
   const radios = [
@@ -24,18 +24,18 @@ export default function SearchBar() {
       const filterByIngredient = await getByFilter(`https://www.${apiName}.com/api/json/v1/1/filter.php?i=${search}`);
       if (Object.values(filterByIngredient)[0] === null) {
         global.alert(message);
-        return setRecipes([]);
+        return setRecipes(recipes);
       }
-      setRecipes(filterByIngredient);
+      setRecipes(Object.values(filterByIngredient)[0]);
     }
 
     if (filter === radios[1].label) {
       const filterByName = await getByFilter(`https://www.${apiName}.com/api/json/v1/1/search.php?s=${search}`);
       if (Object.values(filterByName)[0] === null) {
         global.alert(message);
-        return setRecipes([]);
+        return setRecipes(recipes);
       }
-      setRecipes(filterByName);
+      setRecipes(Object.values(filterByName)[0]);
     }
 
     if (filter === radios[2].label) {
@@ -46,9 +46,9 @@ export default function SearchBar() {
       const filterByFirstLetter = await getByFilter(`https://www.${apiName}.com/api/json/v1/1/search.php?f=${search}`);
       if (Object.values(filterByFirstLetter)[0] === null) {
         global.alert(message);
-        return setRecipes([]);
+        return setRecipes(recipes);
       }
-      setRecipes(filterByFirstLetter);
+      setRecipes(Object.values(filterByFirstLetter)[0]);
     }
   };
 

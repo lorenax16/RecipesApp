@@ -5,7 +5,6 @@ import searchIcon from '../../../../images/searchIcon.svg';
 export default function SearchHeader() {
   const [visible, setVisible] = useState(false);
   const [search, setSearch] = useSearch();
-  console.log(search);
 
   return (
     <section>
