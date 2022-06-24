@@ -8,7 +8,7 @@ import { FoodsContext } from '../../../context/foodContext';
 
 export default function LayoutPage({ typeUrl, typePage }) {
   const history = useHistory();
-  const { recipes, setRecipes } = useContext(FoodsContext);
+  const { recipes, setRecipes, categorySelected } = useContext(FoodsContext);
   const [error, setError] = useState('');
   const types = {
     meals: ['strMealThumb', 'strMeal', 'foods', 'idMeal'],
@@ -19,7 +19,9 @@ export default function LayoutPage({ typeUrl, typePage }) {
   const type = types[typePage];
 
   const recipeFind = useCallback(async () => {
-    const endpoint = `https://www.${typeUrl}.com/api/json/v1/1/search.php?s=`;
+    let endpoint = '';
+    if (categorySelected !== '') endpoint = `https://www.${typeUrl}.com/api/json/v1/1/filter.php?c=${categorySelected}`;
+    else endpoint = `https://www.${typeUrl}.com/api/json/v1/1/search.php?s=`;
     const recipesApi = await getByFilter(endpoint);
 
     if (typeof recipesApi === 'string') setError(recipesApi);
@@ -27,7 +29,7 @@ export default function LayoutPage({ typeUrl, typePage }) {
       const recipesApiSliced = Object.values(recipesApi)[0];
       setRecipes(recipesApiSliced);
     }
-  }, [setRecipes, typeUrl]);
+  }, [categorySelected, setRecipes, typeUrl]);
 
   useEffect(() => {
     recipeFind();
@@ -38,7 +40,7 @@ export default function LayoutPage({ typeUrl, typePage }) {
       <SearchBar />
       <List typeUrl={ typeUrl } />
       {
-        (recipes.length === 1
+        (recipes.length === 1 && categorySelected === ''
           && history.push(`/${type[2]}/${recipes[0][type[3]]}`))
         || (recipes.length !== 0
         && recipes.map((recipe, id) => id < MAX_RECIPES && (

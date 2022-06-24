@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import getByFilter from '../../../api/foodsApi';
+import { useCategories } from '../../../context/foodContext';
 
 function List({ typeUrl }) {
+  const [categorySelected, setCategorySelected] = useCategories();
   const [recipeList, setRecipeList] = useState([]);
   const [visible, setVisible] = useState(true);
   const MAX_RECIPES = 5;
@@ -11,13 +13,14 @@ function List({ typeUrl }) {
     const endpoint = `https://www.${typeUrl}.com/api/json/v1/1/list.php?c=list`;
     const myCategories = await getByFilter(endpoint);
     const categories = Object.values(myCategories)[0];
-    console.log(categories);
     setRecipeList(categories);
   }, [typeUrl]);
 
   useEffect(() => {
     fetchRecipeList();
   }, [fetchRecipeList]);
+
+  console.log(categorySelected);
 
   return (
     <div>
@@ -33,9 +36,15 @@ function List({ typeUrl }) {
         }
         <ul>
           { recipeList.map(({ strCategory }, id) => id < MAX_RECIPES && (
-            <li key={ id } data-testid={ `${strCategory}-category-filter` }>
-              {strCategory}
-            </li>
+            <div key={ id }>
+              <button
+                type="button"
+                data-testid={ `${strCategory}-category-filter` }
+                onClick={ () => setCategorySelected(strCategory) }
+              >
+                {strCategory}
+              </button>
+            </div>
           ))}
         </ul>
       </section>

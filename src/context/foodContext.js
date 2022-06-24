@@ -7,12 +7,20 @@ export default function FoodsProvider({ children }) {
   const [filter, setFilter] = useState('');
   const [search, setSearch] = useState('');
   const [recipes, setRecipes] = useState([]);
+  const [categorySelected, setCategorySelected] = useState('');
 
   return (
     <FoodsContext.Provider
-      value={
-        { filter, setFilter, search, setSearch, recipes, setRecipes }
-      }
+      value={ {
+        filter,
+        setFilter,
+        search,
+        setSearch,
+        recipes,
+        setRecipes,
+        categorySelected,
+        setCategorySelected,
+      } }
     >
       {children}
     </FoodsContext.Provider>
@@ -32,6 +40,11 @@ export const useSearch = () => {
 export const useRecipes = () => {
   const { recipes, setRecipes } = useContext(FoodsContext);
   return [recipes, setRecipes];
+};
+
+export const useCategories = () => {
+  const { categorySelected, setCategorySelected } = useContext(FoodsContext);
+  return [categorySelected, setCategorySelected];
 };
 
 FoodsProvider.propTypes = {
