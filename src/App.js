@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import FoodsProvider from './context/foodContext';
-import { Login, Home } from './pages';
+import { Login, FoodHome, DrinkHome } from './pages';
+// import { NewHome } from './pages/Home/foodIndex';
 import { DefaultTemplate, Details } from './pages/components';
 
 function App() {
@@ -18,8 +19,8 @@ function App() {
           <Route exact path="/drinks/:id/in-progress" component={ Details } />
 
           <DefaultTemplate>
-            <Route exact path="/foods" component={ Home } />
-            <Route exact path="/drinks" component={ Home } />
+            <Route exact path="/foods" component={ FoodHome } />
+            <Route exact path="/drinks" component={ DrinkHome } />
 
             <Route exact path="/explore/foods" component={ Details } />
             <Route exact path="/explore/drinks" component={ Details } />
