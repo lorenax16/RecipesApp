@@ -1,27 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function RecipeCard(props) {
-  const { id, url } = props;
-  const [img, setImg] = useState();
-  const [name, setName] = useState();
-
-  const setItems = useCallback(() => {
-    if (url === 'foods') {
-      const { strMealThumb, strMeal } = props;
-      setImg(strMealThumb);
-      setName(strMeal);
-    } else if (url === 'drinks') {
-      const { strDrinkThumb, strDrink } = props;
-      setImg(strDrinkThumb);
-      setName(strDrink);
-    }
-  }, [props, url]);
-
-  useEffect(() => {
-    setItems();
-  }, [setItems]);
-
+export default function RecipeCard({ id, img, name }) {
   return (
     <div data-testid={ `${id}-recipe-card` }>
       <img src={ img } alt={ name } data-testid={ `${id}-card-img` } />
@@ -31,10 +11,7 @@ export default function RecipeCard(props) {
 }
 
 RecipeCard.propTypes = {
-  id: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired,
-  strMealThumb: PropTypes.string.isRequired,
-  strMeal: PropTypes.string.isRequired,
-  strDrinkThumb: PropTypes.string.isRequired,
-  strDrink: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  img: PropTypes.string.isRequired,
 };
