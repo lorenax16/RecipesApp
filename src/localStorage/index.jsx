@@ -14,7 +14,7 @@ export const getEmail = () => {
 };
 
 // remove
-export const clearEmail = () => {
+export const clearLocalStorage = () => {
   localStorage.removeItem(USER);
   localStorage.removeItem(MEALS_TOKEN);
   localStorage.removeItem(COCKTAILS_TOKEN);

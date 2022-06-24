@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { getEmail, clearEmail } from '../../localStorage';
+import { getEmail, clearLocalStorage } from '../../localStorage';
 
 export default function Profile() {
   const [email, setEmail] = useState('');
@@ -14,7 +14,7 @@ export default function Profile() {
   const toGoFavoriteRecipes = () => history.push('/favorite-recipes');
   const toGoDoneRecipes = () => history.push('/done-recipes');
   const toGoLogin = () => {
-    clearEmail();
+    clearLocalStorage();
     history.push('/');
   };
 
