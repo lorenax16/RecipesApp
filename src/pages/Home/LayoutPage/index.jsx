@@ -49,6 +49,8 @@ export default function LayoutPage({ typeUrl, typePage }) {
             id={ id }
             img={ recipe[type[0]] }
             name={ recipe[type[1]] }
+            type={ type[2] }
+            idRecipe={ recipe[type[3]] }
           />
         )))
       }
