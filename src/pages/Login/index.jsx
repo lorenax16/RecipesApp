@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import Input from '../components/Input';
+import { Input } from '../components';
 
 export default function Login() {
   const [email, setEmail] = useState('');
