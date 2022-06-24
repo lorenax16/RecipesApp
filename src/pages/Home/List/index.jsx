@@ -50,6 +50,15 @@ function List({ typeUrl }) {
               </button>
             </div>
           ))}
+          <div>
+            <button
+              data-testid="All-category-filter"
+              type="button"
+              onClick={ () => setCategorySelected('') }
+            >
+              All
+            </button>
+          </div>
         </ul>
       </section>
     </div>
