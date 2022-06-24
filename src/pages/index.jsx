@@ -1,3 +1,3 @@
 export { default as Login } from './Login';
-export { default as FoodHome } from './Home/foodIndex';
-export { default as DrinkHome } from './Home/drinkRecipe';
+export { default as FoodsPage } from './Home/FoodsPage';
+export { default as DrinksPage } from './Home/DrinksPage';

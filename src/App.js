@@ -20,8 +20,8 @@ function App() {
           <Route exact path="/drinks/:id/in-progress" component={ Details } />
 
           <DefaultTemplate>
-            <Route exact path="/foods" component={ FoodHome } />
-            <Route exact path="/drinks" component={ DrinkHome } />
+            <Route exact path="/foods" component={ FoodsPage } />
+            <Route exact path="/drinks" component={ DrinksPage } />
 
             <Route exact path="/explore/foods" component={ Details } />
             <Route exact path="/explore/drinks" component={ Details } />
