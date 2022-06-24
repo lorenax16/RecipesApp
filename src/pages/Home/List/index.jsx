@@ -21,8 +21,6 @@ function List({ typeUrl }) {
     fetchRecipeList();
   }, [fetchRecipeList]);
 
-  console.log(categorySelected);
-
   return (
     <div>
       <section>
@@ -42,8 +40,9 @@ function List({ typeUrl }) {
                 type="button"
                 data-testid={ `${strCategory}-category-filter` }
                 onClick={ () => {
-                  if (clicked) setCategorySelected(strCategory);
-                  else setCategorySelected('');
+                  if (clicked || strCategory !== categorySelected) {
+                    setCategorySelected(strCategory);
+                  } else if (strCategory === categorySelected) setCategorySelected('');
                   setClicked(!clicked);
                 } }
               >
