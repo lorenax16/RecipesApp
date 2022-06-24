@@ -5,6 +5,7 @@ import { useCategories } from '../../../context/foodContext';
 
 function List({ typeUrl }) {
   const [categorySelected, setCategorySelected] = useCategories();
+  const [clicked, setClicked] = useState(true);
   const [recipeList, setRecipeList] = useState([]);
   const [visible, setVisible] = useState(true);
   const MAX_RECIPES = 5;
@@ -40,7 +41,11 @@ function List({ typeUrl }) {
               <button
                 type="button"
                 data-testid={ `${strCategory}-category-filter` }
-                onClick={ () => setCategorySelected(strCategory) }
+                onClick={ () => {
+                  if (clicked) setCategorySelected(strCategory);
+                  else setCategorySelected('');
+                  setClicked(!clicked);
+                } }
               >
                 {strCategory}
               </button>
