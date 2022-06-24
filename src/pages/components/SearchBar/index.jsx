@@ -54,8 +54,14 @@ export default function SearchBar() {
 
   return (
     <div>
-      { radios
-        .map((radio) => <RadioBtn key={ radio.id } { ...radio } func={ setFilter } />) }
+      { radios.map((radio) => (
+        <RadioBtn
+          key={ radio.id }
+          { ...radio }
+          func={ setFilter }
+          name="radio-search-bar"
+        />
+      )) }
       <div>
         <button
           type="button"
