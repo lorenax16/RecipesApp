@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FoodsContext } from '../../context/foodContext';
 import getByFilter from '../../api/foodsApi';
+import { SearchBar } from '../components';
+import MealCategoryList from './CategoryList/mealCategoryList';
 
 export default function FoodHome() {
   const { recipes } = useContext(FoodsContext);
@@ -19,11 +21,13 @@ export default function FoodHome() {
 
   useEffect(() => {
     recipeFind();
-    console.log(recipes.length);
+    // console.log(recipes.length);
   }, []);
 
   return (
     <main>
+      <SearchBar />
+      <MealCategoryList />
       {
         recipes.length === 0 && meals.map(({ strMealThumb, strMeal }, id) => (
           <div key={ strMeal } data-testid={ `${id}-recipe-card` }>

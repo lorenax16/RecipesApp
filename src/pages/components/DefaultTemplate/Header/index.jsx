@@ -6,7 +6,7 @@ import SearchHeader from '../SearchHeader';
 
 export default function Header() {
   const location = useLocation().pathname.slice(1);
-  const [disbaled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(false);
 
   const capitalize = (name) => name
     .charAt(0).toUpperCase() + name.slice(1);
@@ -43,7 +43,7 @@ export default function Header() {
       </Link>
       <h1 data-testid="page-title">{ titleFormated() }</h1>
       {
-        disbaled && !location.includes('nationalities')
+        disabled && !location.includes('nationalities')
           ? <img src={ exploreIcon } alt="explore" />
           : <SearchHeader />
       }
