@@ -33,6 +33,8 @@ function App() {
 
             <Route exact path="/profile" component={ Profile } />
 
+            <Route exact path="/drinks/:id" component={ Details } />
+
           </DefaultTemplate>
         </Switch>
       </FoodsProvider>
