@@ -8,7 +8,7 @@ export default function Profile() {
 
   useEffect(() => {
     const getEmailLocalStorage = getEmail();
-    setEmail([getEmailLocalStorage]);
+    setEmail(getEmailLocalStorage);
   }, []);
 
   const toGoFavoriteRecipes = () => history.push('/favorite-recipes');
@@ -20,10 +20,10 @@ export default function Profile() {
 
   return (
     <div>
-      {email.length !== 0
+      {email !== '' && email !== null
       && (
         <h2 data-testid="profile-email">
-          {email.map((user) => user.email)}
+          {email.email}
         </h2>
       )}
 
