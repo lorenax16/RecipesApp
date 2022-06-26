@@ -17,17 +17,19 @@ export default function RecipeDetails() {
       apiUrl: 'themealdb',
       image: 'strMealThumb',
       title: 'strMeal',
-      area: 'strArea',
-      typeRec: 'a',
       category: 'strCategory',
+      apiUrlRec: 'thecocktaildb',
+      titleRec: 'strDrink',
+      imageRec: 'strDrinkThumb',
     },
     drinks: {
       apiUrl: 'thecocktaildb',
       image: 'strDrinkThumb',
       title: 'strDrink',
-      area: 'strCategory',
-      typeRec: 'c',
       category: 'strAlcoholic',
+      apiUrlRec: 'themealdb',
+      titleRec: 'strMeal',
+      imageRec: 'strMealThumb',
     },
   };
 
@@ -42,8 +44,7 @@ export default function RecipeDetails() {
 
   const getCarousel = useCallback(async () => {
     if (choosedRecipe.length !== 0) {
-      const area = choosedRecipe[recipeType.area];
-      const endpoint = `https://www.${recipeType.apiUrl}.com/api/json/v1/1/filter.php?${recipeType.typeRec}=${area}`;
+      const endpoint = `https://www.${recipeType.apiUrlRec}.com/api/json/v1/1/search.php?s=`;
       console.log(endpoint);
       console.log(choosedRecipe);
       const myRecipes = await getByFilter(endpoint);
@@ -53,7 +54,7 @@ export default function RecipeDetails() {
         setRecommendations(myRecipesArray);
       }
     }
-  }, [choosedRecipe, recipeType.apiUrl, recipeType.area, recipeType.typeRec]);
+  }, [choosedRecipe, recipeType.apiUrlRec]);
 
   useEffect(() => {
     const allIngredients = Object.keys(choosedRecipe)
@@ -149,11 +150,11 @@ export default function RecipeDetails() {
             <p
               data-testid={ `${index}-recomendation-title` }
             >
-              {rec[recipeType.title]}
+              {rec[recipeType.titleRec]}
             </p>
             <img
-              src={ rec[recipeType.image] }
-              alt={ rec[recipeType.title] }
+              src={ rec[recipeType.imageRec] }
+              alt={ rec[recipeType.titleRec] }
               data-testid={ `${index}-recomendation-card` }
             />
           </div>
