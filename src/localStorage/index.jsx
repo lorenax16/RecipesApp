@@ -1,9 +1,9 @@
-const USER = 'user';
-const MEALS_TOKEN = 'mealsToken';
-const COCKTAILS_TOKEN = 'cocktailsToken';
-const DONE_RECIPES = 'doneRecipes';
-const FAVORITE_RECIPES = 'favoriteRecipes';
-const IN_PROGRESS_RECIPES = 'inProgressRecipes';
+export const USER = 'user';
+export const MEALS_TOKEN = 'mealsToken';
+export const COCKTAILS_TOKEN = 'cocktailsToken';
+export const DONE_RECIPES = 'doneRecipes';
+export const FAVORITE_RECIPES = 'favoriteRecipes';
+export const IN_PROGRESS_RECIPES = 'inProgressRecipes';
 
 const readEmail = () => JSON.parse(localStorage.getItem(USER));
 

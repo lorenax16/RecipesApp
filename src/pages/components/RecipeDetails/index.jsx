@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import getByFilter from '../../../api/foodsApi';
+import { IN_PROGRESS_RECIPES } from '../../../localStorage';
 import { Btn, IngredientsList, RecCard } from './elements';
 import styles from './styles.module.css';
 
@@ -13,6 +14,11 @@ export default function RecipeDetails() {
   const [ingredients, setIngredients] = useState([]);
   const [measures, setMeasures] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
+  const [inProgressRecipes, setInProgressRecipes] = useState(() => {
+    const initialState = { cocktails: {}, meals: {} };
+    const saved = JSON.parse(localStorage.getItem(IN_PROGRESS_RECIPES));
+    return saved || initialState;
+  });
 
   const types = {
     foods: {
@@ -23,6 +29,7 @@ export default function RecipeDetails() {
       apiUrlRec: 'thecocktaildb',
       titleRec: 'strDrink',
       imageRec: 'strDrinkThumb',
+      type: 'meals',
     },
     drinks: {
       apiUrl: 'thecocktaildb',
@@ -32,6 +39,7 @@ export default function RecipeDetails() {
       apiUrlRec: 'themealdb',
       titleRec: 'strMeal',
       imageRec: 'strMealThumb',
+      type: 'cocktails',
     },
   };
 
@@ -55,6 +63,14 @@ export default function RecipeDetails() {
     }
   }, [choosedRecipe, recipeType.apiUrlRec]);
 
+  const startRecipe = () => {
+    const objRecipe = {
+      ...inProgressRecipes,
+      [recipeType.type]: { [id]: ingredients },
+    };
+    setInProgressRecipes(objRecipe);
+  };
+
   useEffect(() => {
     const allIngredients = Object.keys(choosedRecipe)
       .filter((key) => key.includes('Ingredient'))
@@ -76,6 +92,10 @@ export default function RecipeDetails() {
   useEffect(() => {
     getCarousel();
   }, [getCarousel]);
+
+  useEffect(() => {
+    localStorage.setItem(IN_PROGRESS_RECIPES, JSON.stringify(inProgressRecipes));
+  }, [inProgressRecipes]);
 
   return choosedRecipe.length !== 0 && (
     <div>
@@ -104,8 +124,8 @@ export default function RecipeDetails() {
         </ul>
       </div>
       <div>
-        <Btn name="Compartilhar" id="share-btn" />
-        <Btn name="Favoritar" id="favorite-btn" />
+        <Btn name="Compartilhar" id="share-btn" func={ () => console.log('share') } />
+        <Btn name="Favoritar" id="favorite-btn" func={ () => console.log('favorite') } />
       </div>
       <h3 data-testid="recipe-category">
         {`${choosedRecipe[recipeType.category]}`}
@@ -134,8 +154,17 @@ export default function RecipeDetails() {
           ))
         }
       </div>
-
-      <Btn name="Start Recipe" id="start-recipe-btn" />
+      {
+        Object.keys(inProgressRecipes[recipeType.type]).some((key) => key !== id)
+          ? <Btn name="Start Recipe" id="start-recipe-btn" func={ startRecipe } />
+          : (
+            <Btn
+              name="Continue Recipe"
+              id="start-recipe-btn"
+              func={ () => console.log('continue') }
+            />
+          )
+      }
     </div>
   );
 }
