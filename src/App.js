@@ -4,7 +4,7 @@ import FoodsProvider from './context/foodContext';
 import { Login, FoodsPage, DrinksPage } from './pages';
 import Profile from './pages/Profile';
 // import { NewHome } from './pages/Home/foodIndex';
-import { DefaultTemplate, Details } from './pages/components';
+import { DefaultTemplate, RecipeDetails } from './pages/components';
 
 function App() {
   return (
@@ -13,27 +13,27 @@ function App() {
         <Switch>
           <Route exact path="/" component={ Login } />
 
-          <Route exact path="/foods/:id" component={ Details } />
-          <Route exact path="/drinks/:id" component={ Details } />
+          <Route exact path="/foods/:id" component={ RecipeDetails } />
+          <Route exact path="/drinks/:id" component={ RecipeDetails } />
 
-          <Route exact path="/foods/:id/in-progress" component={ Details } />
-          <Route exact path="/drinks/:id/in-progress" component={ Details } />
+          <Route exact path="/foods/:id/in-progress" component={ RecipeDetails } />
+          <Route exact path="/drinks/:id/in-progress" component={ RecipeDetails } />
 
           <DefaultTemplate>
             <Route exact path="/foods" component={ FoodsPage } />
             <Route exact path="/drinks" component={ DrinksPage } />
 
-            <Route exact path="/explore/foods" component={ Details } />
-            <Route exact path="/explore/drinks" component={ Details } />
+            <Route exact path="/explore/foods" component={ RecipeDetails } />
+            <Route exact path="/explore/drinks" component={ RecipeDetails } />
 
-            <Route exact path="/explore/foods/nationalities" component={ Details } />
+            <Route path="/explore/foods/nationalities" component={ RecipeDetails } />
 
-            <Route exact path="/explore/foods/ingredients" component={ Details } />
-            <Route exact path="/explore/drinks/ingredients" component={ Details } />
+            <Route exact path="/explore/foods/ingredients" component={ RecipeDetails } />
+            <Route exact path="/explore/drinks/ingredients" component={ RecipeDetails } />
 
             <Route exact path="/profile" component={ Profile } />
 
-            <Route exact path="/drinks/:id" component={ Details } />
+            <Route exact path="/drinks/:id" component={ RecipeDetails } />
 
           </DefaultTemplate>
         </Switch>
