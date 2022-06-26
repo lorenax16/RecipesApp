@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import getByFilter from '../../../api/foodsApi';
 import { IN_PROGRESS_RECIPES } from '../../../localStorage';
 import { Btn, IngredientsList, RecCard } from './elements';
@@ -10,6 +10,7 @@ const MAX_REC = 6;
 export default function RecipeDetails() {
   const { id } = useParams();
   const url = useLocation().pathname.slice(1).split('/')[0];
+  const history = useHistory();
   const [choosedRecipe, setChoosedRecipe] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [measures, setMeasures] = useState([]);
@@ -69,6 +70,7 @@ export default function RecipeDetails() {
       [recipeType.type]: { [id]: ingredients },
     };
     setInProgressRecipes(objRecipe);
+    history.push(`/${url}/${id}/in-progress`);
   };
 
   useEffect(() => {
@@ -155,15 +157,15 @@ export default function RecipeDetails() {
         }
       </div>
       {
-        Object.keys(inProgressRecipes[recipeType.type]).some((key) => key !== id)
-          ? <Btn name="Start Recipe" id="start-recipe-btn" func={ startRecipe } />
-          : (
+        Object.keys(inProgressRecipes[recipeType.type]).some((key) => key === id)
+          ? (
             <Btn
               name="Continue Recipe"
               id="start-recipe-btn"
               func={ () => console.log('continue') }
             />
           )
+          : <Btn name="Start Recipe" id="start-recipe-btn" func={ startRecipe } />
       }
     </div>
   );
