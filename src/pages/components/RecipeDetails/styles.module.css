@@ -1,0 +1,9 @@
+.rec {
+  background-color: aqua;
+  display: flex;
+  overflow-x: scroll;
+}
+
+.rec img {
+  width: 185px;
+}

@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import getByFilter from '../../../api/foodsApi';
+import { Btn, IngredientsList, RecCard } from './elements';
+import styles from './styles.module.css';
 
-// const MAX_REC = 12;
+const MAX_REC = 6;
 
 export default function RecipeDetails() {
   const { id } = useParams();
@@ -45,10 +47,7 @@ export default function RecipeDetails() {
   const getCarousel = useCallback(async () => {
     if (choosedRecipe.length !== 0) {
       const endpoint = `https://www.${recipeType.apiUrlRec}.com/api/json/v1/1/search.php?s=`;
-      console.log(endpoint);
-      console.log(choosedRecipe);
       const myRecipes = await getByFilter(endpoint);
-      console.log(myRecipes);
       if (typeof myRecipes !== 'string') {
         const myRecipesArray = Object.values(myRecipes)[0];
         setRecommendations(myRecipesArray);
@@ -62,9 +61,7 @@ export default function RecipeDetails() {
       .map((key) => choosedRecipe[key])
       .filter((ingredient) => (ingredient && ingredient !== '') && ingredient);
     setIngredients(allIngredients);
-  }, [choosedRecipe]);
 
-  useEffect(() => {
     const allMeasures = Object.keys(choosedRecipe)
       .filter((key) => key.includes('Measure'))
       .map((key) => choosedRecipe[key])
@@ -80,13 +77,10 @@ export default function RecipeDetails() {
     getCarousel();
   }, [getCarousel]);
 
-  console.log(recommendations);
-
   return choosedRecipe.length !== 0 && (
     <div>
       <h1>{`${choosedRecipe[recipeType.title]} Detail`}</h1>
       <img
-        // src={ choosedRecipe.strDrinkThumb }
         src={ choosedRecipe[recipeType.image] }
         alt="foto drink"
         data-testid="recipe-photo"
@@ -95,46 +89,30 @@ export default function RecipeDetails() {
         { choosedRecipe[recipeType.title] }
       </h2>
       <h2>Ingredientes</h2>
-      <ul>
-        {
-          ingredients.map((ingitem, ingindex) => (
-            <li
-              key={ ingindex }
-              data-testid={ `${ingindex}-ingredient-name-and-measure` }
-            >
-              {
-                measures[ingindex] === undefined
-                  ? `${ingitem}`
-                  : `${ingitem}: ${measures[ingindex]}`
-              }
-            </li>
-          ))
-        }
-      </ul>
       <div>
-        <button
-          type="button"
-          data-testid="share-btn"
-        >
-          Compartilhar
-        </button>
-        <button
-          type="button"
-          data-testid="favorite-btn"
-        >
-          Favoritar
-        </button>
+        <ul>
+          {
+            ingredients.map((item, index) => (
+              <IngredientsList
+                id={ index }
+                measure={ measures[index] }
+                item={ item }
+                key={ index }
+              />
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <Btn name="Compartilhar" id="share-btn" />
+        <Btn name="Favoritar" id="favorite-btn" />
       </div>
       <h3 data-testid="recipe-category">
-        {
-          `${choosedRecipe[recipeType.category]}`
-        }
+        {`${choosedRecipe[recipeType.category]}`}
       </h3>
-      {
-        <p data-testid="instructions">
-          {`${choosedRecipe.strInstructions}`}
-        </p>
-      }
+      <p data-testid="instructions">
+        {`${choosedRecipe.strInstructions}`}
+      </p>
       {
         url === 'foods' && (
           <p data-testid="video">
@@ -143,30 +121,21 @@ export default function RecipeDetails() {
         )
       }
       <h3>Recommendations:</h3>
-      {
-        recommendations.length !== 0
-        && recommendations.map((rec, index) => (
-          <div key={ index }>
-            <p
-              data-testid={ `${index}-recomendation-title` }
-            >
-              {rec[recipeType.titleRec]}
-            </p>
-            <img
-              src={ rec[recipeType.imageRec] }
-              alt={ rec[recipeType.titleRec] }
-              data-testid={ `${index}-recomendation-card` }
+      <div className={ styles.rec }>
+        {
+          recommendations.length !== 0
+          && recommendations.map((rec, index) => index < MAX_REC && (
+            <RecCard
+              title={ rec[recipeType.titleRec] }
+              image={ rec[recipeType.imageRec] }
+              index={ index }
+              key={ index }
             />
-          </div>
-        ))
-      }
-      <button
-        type="button"
-        data-testid="start-recipe-btn"
-        label="Start!"
-      >
-        Start!
-      </button>
+          ))
+        }
+      </div>
+
+      <Btn name="Start!" id="start-recipe-btn" />
     </div>
   );
 }
