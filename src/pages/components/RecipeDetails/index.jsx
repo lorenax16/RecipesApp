@@ -20,6 +20,7 @@ export default function RecipeDetails() {
     const saved = JSON.parse(localStorage.getItem(IN_PROGRESS_RECIPES));
     return saved || initialState;
   });
+  const [copySuccess, setCopySuccess] = useState('');
 
   const types = {
     foods: {
@@ -70,7 +71,15 @@ export default function RecipeDetails() {
       [recipeType.type]: { [id]: ingredients },
     };
     setInProgressRecipes(objRecipe);
+    localStorage.setItem(IN_PROGRESS_RECIPES, JSON.stringify(objRecipe));
     history.push(`/${url}/${id}/in-progress`);
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(window.location.href);
+    const TIME_MENSSAGE = 5000;
+    setCopySuccess('Link copied!');
+    setTimeout(() => setCopySuccess(''), TIME_MENSSAGE);
   };
 
   useEffect(() => {
@@ -94,10 +103,6 @@ export default function RecipeDetails() {
   useEffect(() => {
     getCarousel();
   }, [getCarousel]);
-
-  useEffect(() => {
-    localStorage.setItem(IN_PROGRESS_RECIPES, JSON.stringify(inProgressRecipes));
-  }, [inProgressRecipes]);
 
   return choosedRecipe.length !== 0 && (
     <div>
@@ -126,7 +131,7 @@ export default function RecipeDetails() {
         </ul>
       </div>
       <div>
-        <Btn name="Compartilhar" id="share-btn" func={ () => console.log('share') } />
+        <Btn name="Compartilhar" id="share-btn" func={ copyToClipboard } />
         <Btn name="Favoritar" id="favorite-btn" func={ () => console.log('favorite') } />
       </div>
       <h3 data-testid="recipe-category">
@@ -154,6 +159,11 @@ export default function RecipeDetails() {
               key={ index }
             />
           ))
+        }
+      </div>
+      <div>
+        {
+          copySuccess !== '' && <p>{copySuccess}</p>
         }
       </div>
       {
