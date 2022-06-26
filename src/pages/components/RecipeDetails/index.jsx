@@ -135,7 +135,7 @@ export default function RecipeDetails() {
         }
       </div>
 
-      <Btn name="Start!" id="start-recipe-btn" />
+      <Btn name="Start Recipe" id="start-recipe-btn" />
     </div>
   );
 }
