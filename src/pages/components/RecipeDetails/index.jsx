@@ -48,7 +48,6 @@ export default function RecipeDetails() {
   const [favorite, setFavorite] = useState(() => {
     const initialState = [];
     const saved = JSON.parse(localStorage.getItem(FAVORITE_RECIPES));
-    console.log(saved);
     return saved || initialState;
   });
 
