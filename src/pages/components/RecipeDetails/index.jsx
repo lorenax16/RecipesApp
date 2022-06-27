@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import getByFilter from '../../../api/foodsApi';
 import { IN_PROGRESS_RECIPES } from '../../../localStorage';
-import { Btn, IngredientsList, RecCard } from './elements';
+import { Btn, IngredientsList, RecCard, LikeBtns } from './elements';
 import styles from './styles.module.css';
 
 const MAX_REC = 6;
@@ -132,7 +132,8 @@ export default function RecipeDetails() {
       </div>
       <div>
         <Btn name="Compartilhar" id="share-btn" func={ copyToClipboard } />
-        <Btn name="Favoritar" id="favorite-btn" func={ () => console.log('favorite') } />
+        <Btn name="Favoritar" id="favorite-btn" func={ () => console.log('fav') } />
+        <LikeBtns />
       </div>
       <h3 data-testid="recipe-category">
         {`${choosedRecipe[recipeType.category]}`}
