@@ -1,13 +1,35 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import getByFilter from '../../../api/foodsApi';
-import { IN_PROGRESS_RECIPES } from '../../../localStorage';
-import { Btn, IngredientsList, RecCard } from './elements';
-import styles from './styles.module.css';
+import { FAVORITE_RECIPES, IN_PROGRESS_RECIPES } from '../../../localStorage';
+import { Btn, BtnFavorite, BtnStartRecipe, CopySucess, IngredientsList, RecList,
+  VideoCard } from './elements';
 
-const MAX_REC = 6;
+const types = {
+  foods: {
+    apiUrl: 'themealdb',
+    image: 'strMealThumb',
+    title: 'strMeal',
+    category: 'strCategory',
+    apiUrlRec: 'thecocktaildb',
+    titleRec: 'strDrink',
+    imageRec: 'strDrinkThumb',
+    type: 'meals',
+  },
+  drinks: {
+    apiUrl: 'thecocktaildb',
+    image: 'strDrinkThumb',
+    title: 'strDrink',
+    category: 'strAlcoholic',
+    apiUrlRec: 'themealdb',
+    titleRec: 'strMeal',
+    imageRec: 'strMealThumb',
+    type: 'cocktails',
+  },
+};
 
 export default function RecipeDetails() {
+  const MAX_REC = 6;
   const { id } = useParams();
   const url = useLocation().pathname.slice(1).split('/')[0];
   const history = useHistory();
@@ -21,29 +43,11 @@ export default function RecipeDetails() {
     return saved || initialState;
   });
   const [copySuccess, setCopySuccess] = useState('');
-
-  const types = {
-    foods: {
-      apiUrl: 'themealdb',
-      image: 'strMealThumb',
-      title: 'strMeal',
-      category: 'strCategory',
-      apiUrlRec: 'thecocktaildb',
-      titleRec: 'strDrink',
-      imageRec: 'strDrinkThumb',
-      type: 'meals',
-    },
-    drinks: {
-      apiUrl: 'thecocktaildb',
-      image: 'strDrinkThumb',
-      title: 'strDrink',
-      category: 'strAlcoholic',
-      apiUrlRec: 'themealdb',
-      titleRec: 'strMeal',
-      imageRec: 'strMealThumb',
-      type: 'cocktails',
-    },
-  };
+  const [favorite, setFavorite] = useState(() => {
+    const initialState = [];
+    const saved = JSON.parse(localStorage.getItem(FAVORITE_RECIPES));
+    return saved || initialState;
+  });
 
   const recipeType = types[url];
 
@@ -58,10 +62,8 @@ export default function RecipeDetails() {
     if (choosedRecipe.length !== 0) {
       const endpoint = `https://www.${recipeType.apiUrlRec}.com/api/json/v1/1/search.php?s=`;
       const myRecipes = await getByFilter(endpoint);
-      if (typeof myRecipes !== 'string') {
-        const myRecipesArray = Object.values(myRecipes)[0];
-        setRecommendations(myRecipesArray);
-      }
+      const myRecipesArray = Object.values(myRecipes)[0];
+      setRecommendations(myRecipesArray);
     }
   }, [choosedRecipe, recipeType.apiUrlRec]);
 
@@ -82,20 +84,52 @@ export default function RecipeDetails() {
     setTimeout(() => setCopySuccess(''), TIME_MENSSAGE);
   };
 
-  useEffect(() => {
-    const allIngredients = Object.keys(choosedRecipe)
-      .filter((key) => key.includes('Ingredient'))
-      .map((key) => choosedRecipe[key])
-      .filter((ingredient) => (ingredient && ingredient !== '') && ingredient);
-    setIngredients(allIngredients);
+  const saveFavorite = (condition) => {
+    if (!condition) {
+      const objRecipe = {
+        id,
+        type: url,
+        nationality: choosedRecipe.strNationality,
+        category: choosedRecipe.strCategory,
+        alcoholicOrNot: choosedRecipe.strAlcoholic ? choosedRecipe.strAlcoholic : '',
+        name: choosedRecipe[recipeType.title],
+        image: choosedRecipe[recipeType.image],
+      };
 
-    const allMeasures = Object.keys(choosedRecipe)
-      .filter((key) => key.includes('Measure'))
+      const favoriteRecipes = [
+        ...favorite,
+        objRecipe,
+      ];
+
+      setFavorite(favoriteRecipes);
+      localStorage.setItem(FAVORITE_RECIPES, JSON.parse(favoriteRecipes));
+    } else {
+      const favToRemove = favorite.findIndex((fav) => fav.id === id);
+      const newFavorites = favorite.slice(favToRemove, 1);
+      setFavorite(newFavorites);
+      localStorage.setItem(FAVORITE_RECIPES, favToRemove);
+    }
+  };
+
+  const getItem = useCallback((keyItem) => {
+    const functions = {
+      Ingredient: (items) => setIngredients(items),
+      Measure: (items) => setMeasures(items),
+    };
+
+    const allItems = Object.keys(choosedRecipe)
+      .filter((key) => key.includes(keyItem))
       .map((key) => choosedRecipe[key])
-      .filter((measure) => (measure && measure !== '') && measure);
-    setMeasures(allMeasures);
+      .filter((items) => (items && items !== '') && items);
+    functions[keyItem](allItems);
   }, [choosedRecipe]);
 
+  useEffect(() => {
+    getItem('Ingredient');
+    getItem('Measure');
+  }, [getItem]);
+
+  console.log(ingredients);
   useEffect(() => {
     fetchMyRecipe();
   }, [fetchMyRecipe]);
@@ -115,24 +149,16 @@ export default function RecipeDetails() {
       <h2 data-testid="recipe-title">
         { choosedRecipe[recipeType.title] }
       </h2>
-      <h2>Ingredientes</h2>
-      <div>
-        <ul>
-          {
-            ingredients.map((item, index) => (
-              <IngredientsList
-                id={ index }
-                measure={ measures[index] }
-                item={ item }
-                key={ index }
-              />
-            ))
-          }
-        </ul>
-      </div>
+      <IngredientsList ingredients={ ingredients } measures={ measures } />
       <div>
         <Btn name="Compartilhar" id="share-btn" func={ copyToClipboard } />
-        <Btn name="Favoritar" id="favorite-btn" func={ () => console.log('favorite') } />
+        <BtnFavorite
+          favorite={ favorite }
+          black={ blackHeartIcon }
+          white={ whiteHeartIcon }
+          saveFavorite={ saveFavorite }
+          id={ id }
+        />
       </div>
       <h3 data-testid="recipe-category">
         {`${choosedRecipe[recipeType.category]}`}
@@ -140,43 +166,19 @@ export default function RecipeDetails() {
       <p data-testid="instructions">
         {`${choosedRecipe.strInstructions}`}
       </p>
-      {
-        url === 'foods' && (
-          <p data-testid="video">
-            Aqui fica o vídeo
-          </p>
-        )
-      }
-      <h3>Recommendations:</h3>
-      <div className={ styles.rec }>
-        {
-          recommendations.length !== 0
-          && recommendations.map((rec, index) => index < MAX_REC && (
-            <RecCard
-              title={ rec[recipeType.titleRec] }
-              image={ rec[recipeType.imageRec] }
-              index={ index }
-              key={ index }
-            />
-          ))
-        }
-      </div>
-      <div>
-        {
-          copySuccess !== '' && <p>{copySuccess}</p>
-        }
-      </div>
-      {
-        Object.keys(inProgressRecipes[recipeType.type]).some((key) => key === id)
-          ? (
-            <Btn
-              name="Continue Recipe"
-              id="start-recipe-btn"
-              func={ () => console.log('continue') }
-            />
-          )
-          : <Btn name="Start Recipe" id="start-recipe-btn" func={ startRecipe } />
-      }
+      <VideoCard url={ url } />
+      <RecList
+        recommendations={ recommendations }
+        max={ MAX_REC }
+        recipeType={ recipeType }
+      />
+      <CopySucess copy={ copySuccess } />
+      <BtnStartRecipe
+        inProgressRecipes={ inProgressRecipes }
+        recipeType={ recipeType }
+        startRecipe={ startRecipe }
+        id={ id }
+      />
     </div>
   );
 }

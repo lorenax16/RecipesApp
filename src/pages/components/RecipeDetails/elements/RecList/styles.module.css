@@ -1,9 +1,9 @@
-.rec {
+.container {
   background-color: aqua;
   display: flex;
   overflow-x: scroll;
 }
 
-.rec img {
+.container img {
   width: 185px;
 }

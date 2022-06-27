@@ -1,3 +1,9 @@
 export { default as RecCard } from './RecCard';
 export { default as Btn } from './Btn';
+export { default as IngredientLine } from './IngredientLine';
 export { default as IngredientsList } from './IngredientsList';
+export { default as BtnStartRecipe } from './BtnStartRecipe';
+export { default as RecList } from './RecList';
+export { default as CopySucess } from './CopySucess';
+export { default as VideoCard } from './VideoCard';
+export { default as BtnFavorite } from './BtnFavorite';
