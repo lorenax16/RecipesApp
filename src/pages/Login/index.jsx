@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Input } from '../components';
+import { addToLocalStorage } from '../../localStorage';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -9,11 +10,11 @@ export default function Login() {
   const history = useHistory();
 
   const checkErrors = useCallback(() => {
-    const minLen = 7;
+    const MIN_LENGTH = 7;
     const validateEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     const errors = [
-      password.length < minLen,
+      password.length < MIN_LENGTH,
       !validateEmail.test(email),
     ];
 
@@ -27,9 +28,10 @@ export default function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    localStorage.setItem('mealsToken', 1);
-    localStorage.setItem('cocktailsToken', 1);
-    localStorage.setItem('user', JSON.stringify({ email }));
+    addToLocalStorage('mealsToken', 1);
+    addToLocalStorage('cocktailsToken', 1);
+    addToLocalStorage('user', { email });
+
     history.push('/foods');
   };
 
