@@ -154,8 +154,6 @@ export default function RecipeDetails() {
         <Btn name="Compartilhar" id="share-btn" func={ copyToClipboard } />
         <BtnFavorite
           favorite={ favorite }
-          black={ blackHeartIcon }
-          white={ whiteHeartIcon }
           saveFavorite={ saveFavorite }
           id={ id }
         />
