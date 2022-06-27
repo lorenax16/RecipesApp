@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import FoodsProvider from './context/foodContext';
-import { Login, FoodsPage, DrinksPage, RecipeInProgress,  ExploreRecipes, Explore } from './pages';
+import { Login, FoodsPage, DrinksPage, RecipeInProgress, ExploreRecipes,
+  Explore } from './pages';
 import Profile from './pages/Profile';
 // import { NewHome } from './pages/Home/foodIndex';
 import { DefaultTemplate, RecipeDetails } from './pages/components';
