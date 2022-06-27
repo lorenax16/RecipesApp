@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import FoodsProvider from './context/foodContext';
-import { Login, FoodsPage, DrinksPage, ExploreRecipes } from './pages';
+import { Login, FoodsPage, DrinksPage, ExploreRecipes, Explore } from './pages';
 import Profile from './pages/Profile';
 // import { NewHome } from './pages/Home/foodIndex';
 import { DefaultTemplate, Details } from './pages/components';
@@ -23,6 +23,7 @@ function App() {
             <Route exact path="/foods" component={ FoodsPage } />
             <Route exact path="/drinks" component={ DrinksPage } />
 
+            <Route exact path="/explore" component={ Explore } />
             <Route exact path="/explore/foods" component={ ExploreRecipes } />
             <Route exact path="/explore/drinks" component={ ExploreRecipes } />
 
