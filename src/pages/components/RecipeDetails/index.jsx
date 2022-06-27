@@ -7,6 +7,7 @@ import { Btn, BtnFavorite, BtnStartRecipe, CopySucess, IngredientsList, RecList,
 
 const types = {
   foods: {
+    idKey: 'food',
     apiUrl: 'themealdb',
     image: 'strMealThumb',
     title: 'strMeal',
@@ -17,6 +18,7 @@ const types = {
     type: 'meals',
   },
   drinks: {
+    idKey: 'drink',
     apiUrl: 'thecocktaildb',
     image: 'strDrinkThumb',
     title: 'strDrink',
@@ -46,6 +48,7 @@ export default function RecipeDetails() {
   const [favorite, setFavorite] = useState(() => {
     const initialState = [];
     const saved = JSON.parse(localStorage.getItem(FAVORITE_RECIPES));
+    console.log(saved);
     return saved || initialState;
   });
 
@@ -88,8 +91,8 @@ export default function RecipeDetails() {
     if (!condition) {
       const objRecipe = {
         id,
-        type: url,
-        nationality: choosedRecipe.strNationality,
+        type: recipeType.idKey,
+        nationality: choosedRecipe.strArea ? choosedRecipe.strArea : '',
         category: choosedRecipe.strCategory,
         alcoholicOrNot: choosedRecipe.strAlcoholic ? choosedRecipe.strAlcoholic : '',
         name: choosedRecipe[recipeType.title],
@@ -102,12 +105,13 @@ export default function RecipeDetails() {
       ];
 
       setFavorite(favoriteRecipes);
-      localStorage.setItem(FAVORITE_RECIPES, JSON.parse(favoriteRecipes));
+      localStorage.setItem(FAVORITE_RECIPES, JSON.stringify(favoriteRecipes));
     } else {
       const favToRemove = favorite.findIndex((fav) => fav.id === id);
-      const newFavorites = favorite.slice(favToRemove, 1);
-      setFavorite(newFavorites);
-      localStorage.setItem(FAVORITE_RECIPES, favToRemove);
+      const removeItem = favorite.slice(favToRemove, favorite.length)[0];
+      const favoritesUpdate = favorite.filter((fav) => fav.id !== removeItem.id);
+      setFavorite(favoritesUpdate);
+      localStorage.setItem(FAVORITE_RECIPES, JSON.stringify(favoritesUpdate));
     }
   };
 
@@ -129,7 +133,6 @@ export default function RecipeDetails() {
     getItem('Measure');
   }, [getItem]);
 
-  console.log(ingredients);
   useEffect(() => {
     fetchMyRecipe();
   }, [fetchMyRecipe]);
