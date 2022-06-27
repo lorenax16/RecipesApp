@@ -28,10 +28,10 @@ function App() {
             <Route exact path="/explore/foods" component={ ExploreRecipes } />
             <Route exact path="/explore/drinks" component={ ExploreRecipes } />
 
-            <Route exact path="/explore/foods/nationalities" component={ Details } />
+            <Route path="/explore/foods/nationalities" component={ ExploreRecipes } />
 
-            <Route exact path="/explore/foods/ingredients" component={ Details } />
-            <Route exact path="/explore/drinks/ingredients" component={ Details } />
+            <Route path="/explore/foods/ingredients" component={ ExploreRecipes } />
+            <Route path="/explore/drinks/ingredients" component={ ExploreRecipes } />
 
             <Route exact path="/profile" component={ Profile } />
 
