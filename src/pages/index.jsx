@@ -4,4 +4,3 @@ export { default as DrinksPage } from './Home/DrinksPage';
 export { default as RecipeInProgress } from './RecipeInProgress';
 export { default as ExploreRecipes } from './ExplorarBebidasComidas';
 export { default as Explore } from './ExplorarGeral';
-
