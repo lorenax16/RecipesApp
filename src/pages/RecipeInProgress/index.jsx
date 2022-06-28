@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import getByFilter from '../../api/foodsApi';
-import { IN_PROGRESS_RECIPES } from '../../localStorage';
+import { FAVORITE_RECIPES, IN_PROGRESS_RECIPES } from '../../localStorage';
+import { BtnFavorite } from '../components/RecipeDetails/elements';
 
 export default function RecipeInProgress() {
   const location = useLocation().pathname.split('/')[1];
@@ -39,6 +40,12 @@ export default function RecipeInProgress() {
     return saved ? saved[recipeType.type][id] : defaultValue;
   });
   const [visibled, setVisibled] = useState(false);
+  const [copySucess, setCopySuccess] = useState('');
+  const [favorite, setFavorite] = useState(() => {
+    const initialState = [];
+    const saved = JSON.parse(localStorage.getItem(FAVORITE_RECIPES));
+    return saved || initialState;
+  });
 
   const getRecipeByApi = useCallback(async () => {
     const endpoint = `https://www.${recipeType.apiUrl}.com/api/json/v1/1/lookup.php?i=${id}`;
@@ -64,6 +71,13 @@ export default function RecipeInProgress() {
     getIngredients();
   }, [getIngredients]);
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(window.location.href.split('/in-progress')[0]);
+    const TIME_MENSSAGE = 5000;
+    setCopySuccess('Link copied!');
+    setTimeout(() => setCopySuccess(''), TIME_MENSSAGE);
+  };
+
   const saveStep = (index, name, check) => {
     ingredients[index] = [name, !check];
     setIngredients(ingredients);
@@ -76,7 +90,33 @@ export default function RecipeInProgress() {
     localStorage.setItem(IN_PROGRESS_RECIPES, JSON.stringify(newObj));
     setVisibled(ingredients.every((ing) => ing[1]));
   };
-  console.log(visibled);
+  const saveFavorite = (condition) => {
+    if (!condition) {
+      const objRecipe = {
+        id,
+        type: recipeType.idKey,
+        nationality: recipe.strArea ? recipe.strArea : '',
+        category: recipe.strCategory,
+        alcoholicOrNot: recipe.strAlcoholic ? recipe.strAlcoholic : '',
+        name: recipe[recipeType.title],
+        image: recipe[recipeType.image],
+      };
+
+      const favoriteRecipes = [
+        ...favorite,
+        objRecipe,
+      ];
+
+      setFavorite(favoriteRecipes);
+      localStorage.setItem(FAVORITE_RECIPES, JSON.stringify(favoriteRecipes));
+    } else {
+      const favToRemove = favorite.findIndex((fav) => fav.id === id);
+      const removeItem = favorite.slice(favToRemove, favorite.length)[0];
+      const favoritesUpdate = favorite.filter((fav) => fav.id !== removeItem.id);
+      setFavorite(favoritesUpdate);
+      localStorage.setItem(FAVORITE_RECIPES, JSON.stringify(favoritesUpdate));
+    }
+  };
 
   return recipe.length !== 0 && (
     <div>
@@ -89,15 +129,12 @@ export default function RecipeInProgress() {
       <button
         type="button"
         data-testid="share-btn"
+        onClick={ copyToClipboard }
       >
         Compatilhar
       </button>
-      <button
-        type="button"
-        data-testid="favorite-btn"
-      >
-        Favoritar
-      </button>
+      { copySucess !== '' && copySucess }
+      <BtnFavorite id={ id } favorite={ favorite } saveFavorite={ saveFavorite } />
       <p data-testid="recipe-category">{recipe[recipeType.category]}</p>
       <div>
         <ul>
@@ -135,6 +172,7 @@ export default function RecipeInProgress() {
             Finish Recipe
           </button>
         </div>
+        {visibled}
       </div>
     </div>
   );
