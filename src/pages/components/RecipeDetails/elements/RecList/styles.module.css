@@ -1,0 +1,9 @@
+.container {
+  background-color: aqua;
+  display: flex;
+  overflow-x: scroll;
+}
+
+.container img {
+  width: 185px;
+}
