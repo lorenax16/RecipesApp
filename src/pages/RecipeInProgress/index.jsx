@@ -90,11 +90,11 @@ export default function RecipeInProgress() {
         <ul>
           {
             ingredients.map((ing, index) => (
-              <div key={ index }>
+              <div key={ index } data-testid={ `${index}-ingredient-step` }>
                 <label htmlFor={ `${index}-ingredient-step` }>
                   <input
                     type="checkbox"
-                    data-testid={ `${index}-ingredient-step` }
+                    // data-testid="ingredient-step"
                     id={ `${index}-ingredient-step` }
                   />
                   {ing}
