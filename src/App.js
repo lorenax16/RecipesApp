@@ -4,8 +4,8 @@ import FoodsProvider from './context/foodContext';
 import { Login, FoodsPage, DrinksPage, RecipeInProgress, ExploreRecipes,
   Explore } from './pages';
 import Profile from './pages/Profile';
-// import { NewHome } from './pages/Home/foodIndex';
-import { DefaultTemplate, RecipeDetails } from './pages/components';
+import { DefaultTemplate, Details } from './pages/components';
+import ExploreIngredient from './pages/ExploreIngredient';
 
 function App() {
   return (
@@ -30,8 +30,16 @@ function App() {
 
             <Route path="/explore/foods/nationalities" component={ ExploreRecipes } />
 
-            <Route path="/explore/foods/ingredients" component={ ExploreRecipes } />
-            <Route path="/explore/drinks/ingredients" component={ ExploreRecipes } />
+            <Route
+              exact
+              path="/explore/foods/ingredients"
+              component={ ExploreIngredient }
+            />
+            <Route
+              exact
+              path="/explore/drinks/ingredients"
+              component={ ExploreIngredient }
+            />
 
             <Route exact path="/profile" component={ Profile } />
 

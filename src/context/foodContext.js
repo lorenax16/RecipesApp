@@ -8,6 +8,7 @@ export default function FoodsProvider({ children }) {
   const [search, setSearch] = useState('');
   const [recipes, setRecipes] = useState([]);
   const [categorySelected, setCategorySelected] = useState('');
+  const [filterIngredient, setFilterIngredient] = useState('');
 
   return (
     <FoodsContext.Provider
@@ -20,6 +21,8 @@ export default function FoodsProvider({ children }) {
         setRecipes,
         categorySelected,
         setCategorySelected,
+        filterIngredient,
+        setFilterIngredient,
       } }
     >
       {children}
