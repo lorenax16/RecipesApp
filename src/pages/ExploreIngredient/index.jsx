@@ -22,11 +22,9 @@ export default function ExploreIngredient() {
       const url = `https://www.${type.apiUrl}.com/api/json/v1/1/list.php?i=list`;
       const response = await getByFilter(url);
       setIngredient(Object.values(response)[0]);
-      // console.log(response);
     }
     fetchData();
   }, [type.apiUrl]);
-  // console.log(ingredient);
   const number = 12;
 
   const getImage = (name) => {
