@@ -39,9 +39,16 @@ export default function RecipeInProgress() {
     const defaultValue = [];
     const saved = JSON.parse(localStorage
       .getItem(IN_PROGRESS_RECIPES));
-    return saved ? saved[recipeType.type][id] : defaultValue;
+    return saved ? Object.values(saved[recipeType.type][id]
+      .map((item) => item[0])) : defaultValue;
   });
-  const [disabled, setDisabled] = useState(true);
+  const [checked, setChecked] = useState(() => {
+    const defaultValue = [];
+    const saved = JSON.parse(localStorage
+      .getItem(IN_PROGRESS_RECIPES));
+    return saved ? Object.values(saved[recipeType.type][id]
+      .map((item) => item[1])) : defaultValue;
+  });
   const [copySucess, setCopySuccess] = useState('');
   const [favorite, setFavorite] = useState(() => {
     const initialState = [];
@@ -67,13 +74,12 @@ export default function RecipeInProgress() {
         .filter((items) => (items && items !== '') && items);
       setIngredients(ingredientsApi);
     }
-  }, [ingredients, recipe]);
+    if (checked.length === 0) setChecked(ingredients.map(() => false));
+  }, [checked.length, ingredients, recipe]);
 
   useEffect(() => {
     getIngredients();
-    setDisabled(!ingredients.every((ing) => ing[1]));
-  }, [getIngredients, ingredients]);
-
+  }, [getIngredients]);
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.href.split('/in-progress')[0]);
     const TIME_MENSSAGE = 5000;
@@ -81,18 +87,25 @@ export default function RecipeInProgress() {
     setTimeout(() => setCopySuccess(''), TIME_MENSSAGE);
   };
 
-  const saveStep = (index, name, check) => {
-    ingredients[index] = [name, !check];
+  useEffect(() => {
     setIngredients(ingredients);
+  }, [ingredients]);
 
+  useEffect(() => {
     const saved = JSON.parse(localStorage.getItem(IN_PROGRESS_RECIPES));
     const newObj = {
       ...saved,
-      [recipeType.type]: { [id]: ingredients },
+      [recipeType.type]: { [id]: ingredients
+        .map((ing, index) => [ing, checked[index]]) },
     };
     localStorage.setItem(IN_PROGRESS_RECIPES, JSON.stringify(newObj));
-    setDisabled(!ingredients.every((ing) => ing[1]));
+  }, [checked, id, ingredients, recipeType.type]);
+
+  const saveStep = (index) => {
+    const arrayTeste = checked.map((elem, ind) => (ind === index ? !elem : elem));
+    setChecked(arrayTeste);
   };
+
   const saveFavorite = (condition) => {
     if (!condition) {
       const objRecipe = {
@@ -142,14 +155,14 @@ export default function RecipeInProgress() {
       <div>
         <ul>
           {
-            ingredients.map(([name, check], index) => (
+            ingredients.map((name, index) => (
               <div key={ index } data-testid={ `${index}-ingredient-step` }>
                 <label htmlFor={ `${index}-ingredient-step` }>
                   <input
                     type="checkbox"
+                    checked={ checked[index] }
                     id={ `${index}-ingredient-step` }
-                    checked={ check }
-                    onChange={ () => saveStep(index, name, check) }
+                    onChange={ () => saveStep(index) }
                   />
                   {name}
                 </label>
@@ -171,7 +184,7 @@ export default function RecipeInProgress() {
           <button
             type="button"
             data-testid="finish-recipe-btn"
-            disabled={ disabled }
+            disabled={ !checked.every((check) => check) }
             onClick={ () => history.push('/done-recipes') }
           >
             Finish Recipe
