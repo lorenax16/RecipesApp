@@ -8,7 +8,8 @@ import { FoodsContext } from '../../../context/foodContext';
 
 export default function LayoutPage({ typeUrl, typePage }) {
   const history = useHistory();
-  const { recipes, setRecipes, categorySelected } = useContext(FoodsContext);
+  const { recipes, setRecipes, categorySelected,
+    filterIngredient } = useContext(FoodsContext);
   const [error, setError] = useState('');
   const types = {
     meals: ['strMealThumb', 'strMeal', 'foods', 'idMeal'],
@@ -21,6 +22,7 @@ export default function LayoutPage({ typeUrl, typePage }) {
   const recipeFind = useCallback(async () => {
     let endpoint = '';
     if (categorySelected !== '') endpoint = `https://www.${typeUrl}.com/api/json/v1/1/filter.php?c=${categorySelected}`;
+    else if (filterIngredient !== '') endpoint = `https://www.${typeUrl}.com/api/json/v1/1/filter.php?i=${filterIngredient}`;
     else endpoint = `https://www.${typeUrl}.com/api/json/v1/1/search.php?s=`;
     const recipesApi = await getByFilter(endpoint);
 
@@ -29,7 +31,7 @@ export default function LayoutPage({ typeUrl, typePage }) {
       const recipesApiSliced = Object.values(recipesApi)[0];
       setRecipes(recipesApiSliced);
     }
-  }, [categorySelected, setRecipes, typeUrl]);
+  }, [categorySelected, filterIngredient, setRecipes, typeUrl]);
 
   useEffect(() => {
     recipeFind();
