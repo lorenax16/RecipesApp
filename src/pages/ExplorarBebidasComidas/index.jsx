@@ -24,6 +24,7 @@ export default function ExploreRecipes() {
     getRecipeApi();
   }, [getRecipeApi]);
   console.log(recipe);
+
   return (
     <div>
       <button
