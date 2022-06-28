@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import getByFilter from '../../api/foodsApi';
 import { FAVORITE_RECIPES, IN_PROGRESS_RECIPES } from '../../localStorage';
 import { BtnFavorite } from '../components/RecipeDetails/elements';
 
 export default function RecipeInProgress() {
   const location = useLocation().pathname.split('/')[1];
+  const history = useHistory();
   const { id } = useParams();
   const types = {
     foods: {
@@ -39,7 +41,7 @@ export default function RecipeInProgress() {
       .getItem(IN_PROGRESS_RECIPES));
     return saved ? saved[recipeType.type][id] : defaultValue;
   });
-  const [visibled, setVisibled] = useState(false);
+  const [disabled, setDisabled] = useState(true);
   const [copySucess, setCopySuccess] = useState('');
   const [favorite, setFavorite] = useState(() => {
     const initialState = [];
@@ -69,7 +71,8 @@ export default function RecipeInProgress() {
 
   useEffect(() => {
     getIngredients();
-  }, [getIngredients]);
+    setDisabled(!ingredients.every((ing) => ing[1]));
+  }, [getIngredients, ingredients]);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.href.split('/in-progress')[0]);
@@ -88,7 +91,7 @@ export default function RecipeInProgress() {
       [recipeType.type]: { [id]: ingredients },
     };
     localStorage.setItem(IN_PROGRESS_RECIPES, JSON.stringify(newObj));
-    setVisibled(ingredients.every((ing) => ing[1]));
+    setDisabled(!ingredients.every((ing) => ing[1]));
   };
   const saveFavorite = (condition) => {
     if (!condition) {
@@ -168,11 +171,12 @@ export default function RecipeInProgress() {
           <button
             type="button"
             data-testid="finish-recipe-btn"
+            disabled={ disabled }
+            onClick={ () => history.push('/done-recipes') }
           >
             Finish Recipe
           </button>
         </div>
-        {visibled}
       </div>
     </div>
   );
