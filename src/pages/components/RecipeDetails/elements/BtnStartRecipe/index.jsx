@@ -1,21 +1,24 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Btn from '../Btn';
 
 export default function BtnStartRecipe(
   { inProgressRecipes, recipeType, startRecipe, id },
 ) {
-  return (
-    Object.keys(inProgressRecipes[recipeType.type]).some((key) => key === id)
-      ? (
-        <Btn
-          name="Continue Recipe"
-          id="start-recipe-btn"
-          func={ () => console.log('continue') }
-        />
-      )
-      : <Btn name="Start Recipe" id="start-recipe-btn" func={ startRecipe } />
-  );
+  const [nameBtn, setNameBtn] = useState('');
+
+  const getNameBtn = useCallback(() => {
+    setNameBtn(
+      Object.keys(inProgressRecipes[recipeType.type]).some((key) => key === id)
+        ? 'Continue Recipe' : 'Start Recipe',
+    );
+  }, [id, inProgressRecipes, recipeType.type]);
+
+  useEffect(() => {
+    getNameBtn();
+  }, [getNameBtn]);
+
+  return <Btn name={ nameBtn } id="start-recipe-btn" func={ startRecipe } />;
 }
 
 BtnStartRecipe.propTypes = {

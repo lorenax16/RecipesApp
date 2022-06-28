@@ -38,6 +38,7 @@ export default function RecipeInProgress() {
       .getItem(IN_PROGRESS_RECIPES));
     return saved ? saved[recipeType.type][id] : defaultValue;
   });
+  const [visibled, setVisibled] = useState(false);
 
   const getRecipeByApi = useCallback(async () => {
     const endpoint = `https://www.${recipeType.apiUrl}.com/api/json/v1/1/lookup.php?i=${id}`;
@@ -50,7 +51,6 @@ export default function RecipeInProgress() {
   }, [getRecipeByApi]);
 
   const getIngredients = useCallback(() => {
-    console.log(ingredients);
     if (ingredients.length === 0) {
       const ingredientsApi = Object.keys(recipe)
         .filter((key) => key.includes('Ingredient'))
@@ -62,8 +62,21 @@ export default function RecipeInProgress() {
 
   useEffect(() => {
     getIngredients();
-    console.log('aaaaaaa');
   }, [getIngredients]);
+
+  const saveStep = (index, name, check) => {
+    ingredients[index] = [name, !check];
+    setIngredients(ingredients);
+
+    const saved = JSON.parse(localStorage.getItem(IN_PROGRESS_RECIPES));
+    const newObj = {
+      ...saved,
+      [recipeType.type]: { [id]: ingredients },
+    };
+    localStorage.setItem(IN_PROGRESS_RECIPES, JSON.stringify(newObj));
+    setVisibled(ingredients.every((ing) => ing[1]));
+  };
+  console.log(visibled);
 
   return recipe.length !== 0 && (
     <div>
@@ -89,22 +102,30 @@ export default function RecipeInProgress() {
       <div>
         <ul>
           {
-            ingredients.map((ing, index) => (
+            ingredients.map(([name, check], index) => (
               <div key={ index } data-testid={ `${index}-ingredient-step` }>
                 <label htmlFor={ `${index}-ingredient-step` }>
                   <input
                     type="checkbox"
-                    // data-testid="ingredient-step"
                     id={ `${index}-ingredient-step` }
+                    checked={ check }
+                    onChange={ () => saveStep(index, name, check) }
                   />
-                  {ing}
+                  {name}
                 </label>
               </div>
             ))
           }
         </ul>
         <div>
-          <p data-testid="instructions">{recipe.strInstructions}</p>
+          <h2>Instructions:</h2>
+          <ol data-testid="instructions">
+            {
+              recipe.strInstructions.split('\n').map((paragraph, index) => (
+                <li key={ index }>{paragraph}</li>
+              ))
+            }
+          </ol>
         </div>
         <div>
           <button

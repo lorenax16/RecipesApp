@@ -72,7 +72,7 @@ export default function RecipeDetails() {
   const startRecipe = () => {
     const objRecipe = {
       ...inProgressRecipes,
-      [recipeType.type]: { [id]: ingredients },
+      [recipeType.type]: { [id]: ingredients.map((ing) => [ing, false]) },
     };
     setInProgressRecipes(objRecipe);
     localStorage.setItem(IN_PROGRESS_RECIPES, JSON.stringify(objRecipe));
