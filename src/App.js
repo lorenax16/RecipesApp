@@ -4,7 +4,7 @@ import FoodsProvider from './context/foodContext';
 import { Login, FoodsPage, DrinksPage, RecipeInProgress, ExploreRecipes,
   Explore } from './pages';
 import Profile from './pages/Profile';
-import { DefaultTemplate } from './pages/components';
+import { DefaultTemplate, RecipeDetails } from './pages/components';
 import ExploreIngredient from './pages/ExploreIngredient';
 
 function App() {
