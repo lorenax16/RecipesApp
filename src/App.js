@@ -4,7 +4,7 @@ import FoodsProvider from './context/foodContext';
 import { Login, FoodsPage, DrinksPage, RecipeInProgress, ExploreRecipes,
   Explore } from './pages';
 import Profile from './pages/Profile';
-import { DefaultTemplate } from './pages/components';
+import { DefaultTemplate, RecipeDetails } from './pages/components';
 import ExploreIngredient from './pages/ExploreIngredient';
 
 function App() {
@@ -13,10 +13,8 @@ function App() {
       <FoodsProvider>
         <Switch>
           <Route exact path="/" component={ Login } />
-
           <Route exact path="/foods/:id" component={ RecipeDetails } />
           <Route exact path="/drinks/:id" component={ RecipeDetails } />
-
           <Route exact path="/foods/:id/in-progress" component={ RecipeInProgress } />
           <Route exact path="/drinks/:id/in-progress" component={ RecipeInProgress } />
 
