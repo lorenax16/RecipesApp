@@ -80,6 +80,7 @@ export default function RecipeInProgress() {
   useEffect(() => {
     getIngredients();
   }, [getIngredients]);
+
   const copyToClipboard = () => {
     navigator.clipboard.writeText(window.location.href.split('/in-progress')[0]);
     const TIME_MENSSAGE = 5000;
