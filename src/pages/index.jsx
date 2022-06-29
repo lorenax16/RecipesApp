@@ -6,3 +6,4 @@ export { default as ExploreRecipes } from './ExplorarBebidasComidas';
 export { default as Explore } from './ExplorarGeral';
 export { default as ExploreIngredient } from './ExploreIngredient';
 export { default as FavoriteRecipes } from './FavoriteRecipes';
+export { default as NotFound } from './NotFound';
