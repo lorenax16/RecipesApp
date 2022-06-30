@@ -1,8 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import FoodsProvider from './context/foodContext';
-import {
-  Login,
+import { Login,
   FoodsPage,
   DrinksPage,
   RecipeInProgress,
@@ -14,7 +13,7 @@ import {
   NotFound,
 } from './pages';
 
-import { DefaultTemplate, Details, RecipeDetails } from './pages/components';
+import { DefaultTemplate, RecipeDetails } from './pages/components';
 import ExploreIngredient from './pages/ExploreIngredient';
 
 function App() {
