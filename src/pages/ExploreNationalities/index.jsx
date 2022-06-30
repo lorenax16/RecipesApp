@@ -4,7 +4,7 @@ import LayoutPageNationalities from './LayoutPageNationalities';
 
 export default function ExploreNationalities() {
   const [nationalities, setAPIbyNationalities] = useState([]);
-  const [selectedNationality, setSelectedNationality] = useState('');
+  const [selectedNationality, setSelectedNationality] = useState({ nationality: 'All' });
   const [filterChanged, setFilterChanged] = useState(false);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function ExploreNationalities() {
       <LayoutPageNationalities
         typeUrl="themealdb"
         typePage="meals"
-        nationality={ selectedNationality }
+        selectedNationality={ selectedNationality }
         filterChanged={ filterChanged }
       />
     </div>
