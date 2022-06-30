@@ -19,9 +19,7 @@ export default function LayoutPageNationalities({
     meals: ['strMealThumb', 'strMeal', 'foods', 'idMeal'],
   };
   const MAX_RECIPES = 12;
-
   const type = types[typePage];
-
   const recipeFind = useCallback(async () => {
     let endpoint = '';
 
