@@ -1,10 +1,20 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import FoodsProvider from './context/foodContext';
-import { Login, FoodsPage, DrinksPage, RecipeInProgress, ExploreRecipes,
-  Explore, FavoriteRecipes, NotFound } from './pages';
-import Profile from './pages/Profile';
-import { DefaultTemplate, RecipeDetails } from './pages/components';
+import {
+  Login,
+  FoodsPage,
+  DrinksPage,
+  RecipeInProgress,
+  ExploreRecipes,
+  Explore,
+  FavoriteRecipes,
+  ExploreNationalities,
+  Profile,
+  NotFound,
+} from './pages';
+
+import { DefaultTemplate, Details, RecipeDetails } from './pages/components';
 import ExploreIngredient from './pages/ExploreIngredient';
 
 function App() {
@@ -32,7 +42,7 @@ function App() {
             <Route
               exact
               path="/explore/foods/nationalities"
-              component={ ExploreRecipes }
+              component={ ExploreNationalities }
             />
             <Route
               exact
